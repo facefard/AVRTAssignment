@@ -18,8 +18,8 @@
   <Project Path="Unity.XR.Hands.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" />
   <Project Path="Unity.VisualScripting.Core.csproj" />
-  <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
   <Project Path="Unity.VisualScripting.State.Editor.csproj" />
+  <Project Path="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
   <Project Path="Unity.Burst.CodeGen.csproj" />
   <Project Path="Unity.VisualScripting.Flow.csproj" />
   <Project Path="Unity.PerformanceTesting.csproj" />
@@ -54,6 +54,7 @@
   <Project Path="Unity.XR.OpenXR.Features.MetaQuestSupport.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.DeviceSimulator.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.XR.OpenXR.Features.RuntimeDebugger.csproj" />
   <Project Path="UnityEngine.SpatialTracking.csproj" />
   <Project Path="Unity.XR.OpenXR.Features.OculusQuestSupport.Editor.csproj" />
@@ -61,7 +62,6 @@
   <Project Path="Unity.XR.OpenXR.Features.RuntimeDebugger.Editor.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.Editor.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Unity.XR.OpenXR.TestTooling.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.Hands.Editor.csproj" />
