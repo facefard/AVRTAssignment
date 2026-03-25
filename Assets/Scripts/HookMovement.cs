@@ -8,63 +8,51 @@ public class HookMovement : MonoBehaviour
     public HookMovement otherHook;
 
     private Vector3 _hookedWorldPoint;
-    private Vector3 _previousHandPos;
     private bool _isHooked = false;
 
     public bool IsHooked => _isHooked;
 
-    void Start()
-    {
-        _previousHandPos = transform.position;
-    }
-
     void FixedUpdate()
     {
+        
+        if (playerRigidbody.linearVelocity.magnitude > 5f)
+        {
+            playerRigidbody.linearVelocity = playerRigidbody.linearVelocity.normalized * 5f;
+        }
+
         if (_isHooked)
         {
             Vector3 handToHook = _hookedWorldPoint - transform.position;
             playerRigidbody.AddForce(handToHook * pullStrength, ForceMode.Acceleration);
+            playerRigidbody.linearVelocity *= 0.85f;
         }
-
-        CheckHook();
     }
 
-    void CheckHook()
+    void OnCollisionEnter(Collision collision)
     {
-        Vector3 currentPos = transform.position;
-        Vector3 delta = currentPos - _previousHandPos;
-        float distance = delta.magnitude;
+        if (!collision.collider.CompareTag("Hookable")) return;
 
-        bool found = false;
-
-        // проверяем 10 точек между прошлой и текущей позицией
-        int steps = Mathf.Max(1, Mathf.CeilToInt(distance / 0.01f));
-        for (int i = 0; i <= steps; i++)
+        // крюк должен быть выше точки касания
+        if (transform.position.y > collision.contacts[0].point.y)
         {
-            float t = (float)i / steps;
-            Vector3 checkPos = Vector3.Lerp(_previousHandPos, currentPos, t);
+            _hookedWorldPoint = collision.contacts[0].point;
+            _isHooked = true;
 
-            Collider[] hits = Physics.OverlapSphere(checkPos, 0.05f);
-            foreach (Collider col in hits)
-            {
-                if (col.GetComponent<Hookable>() != null)
-                {
-                    if (!_isHooked)
-                    {
-                        _hookedWorldPoint = checkPos;
-
-                        if (otherHook != null && otherHook.IsHooked)
-                            otherHook.ForceDetach();
-                    }
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
+            if (otherHook != null && otherHook.IsHooked)
+                otherHook.ForceDetach();
         }
+    }
 
-        _isHooked = found;
-        _previousHandPos = currentPos;
+    void OnCollisionStay(Collision collision)
+    {
+        if (!collision.collider.CompareTag("Hookable")) return;
+        if (!_isHooked) return;
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (!collision.collider.CompareTag("Hookable")) return;
+        _isHooked = false;
     }
 
     public void ForceDetach()
