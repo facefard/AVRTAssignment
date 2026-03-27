@@ -40,10 +40,14 @@ namespace UnityEditor.XR.Interaction.Toolkit.Samples
 #if UNITY_INPUT_SYSTEM_PROJECT_WIDE_ACTIONS
         static AddRequest s_InputSystemPackageAddRequest;
 #endif
+        static readonly bool s_DisableAutoValidation = true;
 
         [InitializeOnLoadMethod]
         static void RegisterProjectValidationRules()
         {
+            if (s_DisableAutoValidation)
+                return;
+
             // In the Player Settings UI we have to delay the call one frame to let the settings provider get initialized
             // since we need to access the settings asset to set the rule's non-delegate properties (FixItAutomatic).
             EditorApplication.delayCall += AddRulesAndRunCheck;

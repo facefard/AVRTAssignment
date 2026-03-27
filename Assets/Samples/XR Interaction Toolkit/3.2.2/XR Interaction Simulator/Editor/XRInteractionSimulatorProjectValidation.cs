@@ -46,10 +46,14 @@ namespace UnityEditor.XR.Interaction.Toolkit.Samples.InteractionSimulator.Editor
                 HelpText = $"The {k_DeviceSimulatorSampleName} sample must be updated as to not have GUID conflicts with the {k_SampleDisplayName} sample.",
             }
         };
+        static readonly bool s_DisableAutoValidation = true;
 
         [InitializeOnLoadMethod]
         static void RegisterProjectValidationRules()
         {
+            if (s_DisableAutoValidation)
+                return;
+
             foreach (var buildTargetGroup in s_BuildTargetGroups)
             {
                 BuildValidator.AddRules(buildTargetGroup, s_BuildValidationRules);

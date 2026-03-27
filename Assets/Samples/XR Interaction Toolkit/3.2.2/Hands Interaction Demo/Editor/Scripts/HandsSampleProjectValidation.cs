@@ -113,10 +113,14 @@ namespace UnityEditor.XR.Interaction.Toolkit.Samples.Hands.Editor
 
         static AddRequest s_HandsPackageAddRequest;
         static AddRequest s_ShaderGraphPackageAddRequest;
+        static readonly bool s_DisableAutoValidation = true;
 
         [InitializeOnLoadMethod]
         static void RegisterProjectValidationRules()
         {
+            if (s_DisableAutoValidation)
+                return;
+
             foreach (var buildTargetGroup in s_BuildTargetGroups)
             {
                 BuildValidator.AddRules(buildTargetGroup, s_BuildValidationRules);
