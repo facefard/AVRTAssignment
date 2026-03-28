@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/STARTscene.unity
     guid: db55659be7ee911478dda31d87976317
   - enabled: 1
+    path: Assets/Scenes/Daniil 1.unity
+    guid: 96883233e565799458d2db7ec24a83eb
+  - enabled: 1
     path: Assets/Scenes/Daniil.unity
     guid: e95a7fced2ce7c142af6491472b03f1c
   - enabled: 1
