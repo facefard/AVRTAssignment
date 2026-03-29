@@ -1,20 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class StartButton : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
-    [Tooltip("遷移先シーンのBuild Index")]
-    public int targetSceneIndex = 1;
-    public Button button;
-
-    private void Start()
+    public void LoadGame()
     {
-        if (button == null) button = GetComponent<Button>();
-        button.onClick.AddListener(OnStartButtonClicked);
-    }
-
-    private void OnStartButtonClicked()
-    {
-        SceneTransitionManager.singleton.GoToSceneAsync(targetSceneIndex);
+        SceneManager.LoadScene("Daniil 1");
     }
 }

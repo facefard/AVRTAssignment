@@ -16,9 +16,9 @@ public class FinishTrigger : MonoBehaviour
     public GameObject bronzeMedal;
 
     [Header("Medal Settings")]
-    public float goldTime = 60f;
-    public float silverTime = 90f;
-    public float bronzeTime = 120f;
+    public float goldTime = 10f;
+    public float silverTime = 20f;
+    public float bronzeTime = 30f;
 
     [Header("Audio")]
     public AudioClip finishSound;
