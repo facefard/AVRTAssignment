@@ -1,11 +1,14 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class FinishTrigger : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI finalTimeText;
+
+    public GameObject ResultPanel;
 
     [Header("Medal Objects")]
     public GameObject goldMedal;
@@ -17,10 +20,26 @@ public class FinishTrigger : MonoBehaviour
     public float silverTime = 90f;
     public float bronzeTime = 120f;
 
+    [Header("Audio")]
+    public AudioClip finishSound;
+    public AudioClip medalSound;      // Один звук для всех медалей
+
+    private AudioSource _audioSource;
     private bool _finished = false;
+
+    void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.playOnAwake = false;
+        _audioSource.spatialBlend = 1f;
+        _audioSource.minDistance = 1f;
+        _audioSource.maxDistance = 20f;
+    }
 
     void OnTriggerEnter(Collider other)
     {
+        ResultPanel.SetActive(true);
+
         if (_finished) return;
         if (other.GetComponent<CheckpointTrigger>() == null) return;
 
@@ -34,6 +53,40 @@ public class FinishTrigger : MonoBehaviour
         MedalType medal = GetMedal(finalTime);
 
         UpdateMedalSlots(medal);
+        StartCoroutine(PlaySounds(medal));
+    }
+
+    IEnumerator PlaySounds(MedalType medal)
+    {
+        // Звук финиша сразу
+        if (finishSound != null)
+            _audioSource.PlayOneShot(finishSound);
+
+        if (medalSound == null) yield break;
+
+        switch (medal)
+        {
+            case MedalType.Bronze:
+                // Бронза появляется сразу — звук без задержки
+                _audioSource.PlayOneShot(medalSound);
+                break;
+
+            case MedalType.Silver:
+                // Бронза сразу, серебро через 1с
+                _audioSource.PlayOneShot(medalSound);
+                yield return new WaitForSeconds(1.2f);
+                _audioSource.PlayOneShot(medalSound);
+                break;
+
+            case MedalType.Gold:
+                // Бронза сразу, серебро через 1с, золото через 2с
+                _audioSource.PlayOneShot(medalSound);
+                yield return new WaitForSeconds(1.2f);
+                _audioSource.PlayOneShot(medalSound);
+                yield return new WaitForSeconds(1.2f);
+                _audioSource.PlayOneShot(medalSound);
+                break;
+        }
     }
 
     MedalType GetMedal(float time)
@@ -41,13 +94,11 @@ public class FinishTrigger : MonoBehaviour
         if (time <= goldTime) return MedalType.Gold;
         if (time <= silverTime) return MedalType.Silver;
         if (time <= bronzeTime) return MedalType.Bronze;
-
         return MedalType.None;
     }
 
     void UpdateMedalSlots(MedalType medal)
     {
-        // Включаем по результату
         if (medal == MedalType.Gold)
         {
             goldMedal.SetActive(true);
@@ -70,7 +121,6 @@ public class FinishTrigger : MonoBehaviour
         int minutes = Mathf.FloorToInt(time / 60);
         int seconds = Mathf.FloorToInt(time % 60);
         int milliseconds = Mathf.FloorToInt((time * 100) % 100);
-
         return $"{minutes:00}:{seconds:00}.{milliseconds:00}";
     }
 }
