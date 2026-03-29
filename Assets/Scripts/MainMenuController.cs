@@ -1,24 +1,21 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour
+public class StartMenu : MonoBehaviour
 {
-    public string startSceneName = "SampleScene";
-    public string checkpointSceneName = "FullMap"; 
+    public string mainSceneName = "Daniil 1";
 
+    // 开始游戏
     public void StartGame()
     {
-        SceneManager.LoadScene(startSceneName);
+        SceneManager.LoadScene(mainSceneName);
     }
 
-    public void GoToCheckpoint()
-    {
-        SceneManager.LoadScene(checkpointSceneName);
-    }
-
+    // 退出游戏
     public void QuitGame()
     {
-        Debug.Log("Quit Game");
-        Application.Quit();
+        Debug.Log("Quit Game"); 
+
+        Application.Quit(); 
     }
 }
