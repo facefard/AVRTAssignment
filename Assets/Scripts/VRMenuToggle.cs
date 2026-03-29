@@ -3,11 +3,15 @@ using UnityEngine.XR;
 
 public class VRMenuToggle : MonoBehaviour
 {
-    public GameObject vrMenuCanvas;
-    public Transform headCamera;
+    [Header("References")]
+    public GameObject vrMenuCanvas;  
+    public Transform headCamera;      
+    [Header("Menu Position")]
+    public float distanceFromPlayer = 0.3f;
+    public float heightOffset = 0f;
 
-    public float distanceFromPlayer = 1.5f;
-    public float heightOffset = -0.1f;
+    [Header("Controller")]
+    public XRNode controllerNode = XRNode.RightHand;
 
     private bool lastButtonState = false;
 
@@ -21,14 +25,14 @@ public class VRMenuToggle : MonoBehaviour
 
     void Update()
     {
-        InputDevice rightHand = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
 
         bool buttonPressed = false;
 
-        if (rightHand.isValid)
+        if (device.isValid)
         {
-            // This line controls the menu to open by RIGHT VR controller
-            rightHand.TryGetFeatureValue(CommonUsages.primaryButton, out buttonPressed);
+            // VR controller button
+            device.TryGetFeatureValue(CommonUsages.primaryButton, out buttonPressed);
         }
 
         if (buttonPressed && !lastButtonState)
@@ -48,17 +52,20 @@ public class VRMenuToggle : MonoBehaviour
 
         if (willShow)
         {
+           
             Vector3 forward = headCamera.forward;
             forward.y = 0f;
             forward.Normalize();
 
+          
             Vector3 menuPosition = headCamera.position + forward * distanceFromPlayer;
             menuPosition.y += heightOffset;
 
             vrMenuCanvas.transform.position = menuPosition;
 
-            vrMenuCanvas.transform.LookAt(headCamera);
-            vrMenuCanvas.transform.Rotate(0f, 180f, 0f);
+       
+            vrMenuCanvas.transform.rotation =
+                Quaternion.Euler(0f, headCamera.eulerAngles.y + 180f, 0f);
 
             vrMenuCanvas.SetActive(true);
         }
