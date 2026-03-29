@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Checkpoint : MonoBehaviour
 {
     [Header("Settings")]
@@ -8,7 +9,20 @@ public class Checkpoint : MonoBehaviour
     [Header("Animation")]
     public Animator animator;
 
+    [Header("Audio")]
+    public AudioClip activationSound;
+    private AudioSource _audioSource;
+
     private bool _isActivated = false;
+
+    void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.playOnAwake = false;
+        _audioSource.spatialBlend = 1f;   // 3D-звук для VR
+        _audioSource.minDistance = 1f;
+        _audioSource.maxDistance = 15f;
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -23,9 +37,11 @@ public class Checkpoint : MonoBehaviour
         _isActivated = true;
 
         if (animator != null)
-        {
             animator.SetTrigger("Activate");
-        }
+
+        // Воспроизвести звук
+        if (activationSound != null)
+            _audioSource.PlayOneShot(activationSound);
 
         CheckpointManager.Instance.SetCheckpoint(spawnPoint.position);
     }
