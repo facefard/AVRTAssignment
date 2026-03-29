@@ -6,7 +6,7 @@ public class Checkpoint : MonoBehaviour
     public Transform spawnPoint;
 
     [Header("Animation")]
-    public Animator animator; // добавили
+    public Animator animator;
 
     private bool _isActivated = false;
 
@@ -22,7 +22,6 @@ public class Checkpoint : MonoBehaviour
 
         _isActivated = true;
 
-        // 👉 запускаем анимацию
         if (animator != null)
         {
             animator.SetTrigger("Activate");

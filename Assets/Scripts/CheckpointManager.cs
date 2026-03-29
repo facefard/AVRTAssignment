@@ -5,7 +5,7 @@ public class CheckpointManager : MonoBehaviour
     public static CheckpointManager Instance;
 
     [Header("Settings")]
-    public float fallDeathHeight = -10f; // высота при которой считается падение
+    public float fallDeathHeight = -30f;
     public Transform vrPlayer;
 
     private Vector3 _lastCheckpoint;
@@ -14,12 +14,11 @@ public class CheckpointManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        _lastCheckpoint = vrPlayer.position; // стартовая позиция как первый чекпоинт
+        _lastCheckpoint = vrPlayer.position;
     }
 
     void Update()
     {
-        // проверяем падение каждый кадр
         if (vrPlayer.position.y < fallDeathHeight)
         {
             Respawn();
@@ -38,7 +37,6 @@ public class CheckpointManager : MonoBehaviour
         Debug.Log("Респаун на: " + _lastCheckpoint);
         vrPlayer.position = _lastCheckpoint;
 
-        // сбрасываем скорость если есть Rigidbody
         Rigidbody rb = vrPlayer.GetComponent<Rigidbody>();
         if (rb != null)
             rb.linearVelocity = Vector3.zero;
