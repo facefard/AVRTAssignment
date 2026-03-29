@@ -89,6 +89,8 @@ public class HookMovement : MonoBehaviour
 
                     if (otherHook != null && otherHook.IsHooked)
                         otherHook.ForceDetach();
+
+                    HookHitAudio.RequestPlay();
                 }
             }
         }
